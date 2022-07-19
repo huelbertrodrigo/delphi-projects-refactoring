@@ -6,7 +6,8 @@ program server;
 
 uses
   System.SysUtils,
-  Horse;
+  Horse,
+  uDMConnection in 'database\uDMConnection.pas' {DMConnection: TDataModule};
 
 procedure GetHome(Req: THorseRequest; Res: THorseResponse; Next: TNextProc);
 begin
@@ -15,6 +16,8 @@ end;
 
 procedure GetListen(Horse: THorse);
 begin
+  DMConnection := TDMConnection.Create(nil);
+
   Writeln(Format('Server is runing on %s:%d', [Horse.Host, Horse.Port]));
   Readln;
 end;
