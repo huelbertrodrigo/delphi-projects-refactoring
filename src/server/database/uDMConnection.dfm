@@ -1,9 +1,9 @@
 object DMConnection: TDMConnection
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 150
-  Width = 215
-  object ZConnection: TZConnection
+  Height = 64
+  Width = 337
+  object ZConnectionSQLite: TZConnection
     ControlsCodePage = cCP_UTF16
     Catalog = ''
     AutoEncodeStrings = False
@@ -13,7 +13,35 @@ object DMConnection: TDMConnection
     User = ''
     Password = ''
     Protocol = ''
-    Left = 88
-    Top = 56
+    Left = 144
+    Top = 8
+  end
+  object ZConnectionPostgreSQL: TZConnection
+    ControlsCodePage = cCP_UTF16
+    Catalog = ''
+    Properties.Strings = (
+      'RawStringEncoding=DB_CP')
+    AutoEncodeStrings = False
+    HostName = ''
+    Port = 0
+    Database = ''
+    User = ''
+    Password = ''
+    Protocol = ''
+    Left = 256
+    Top = 8
+  end
+  object ZConnectionFirebird: TZConnection
+    ControlsCodePage = cCP_UTF16
+    Catalog = ''
+    AutoEncodeStrings = False
+    HostName = ''
+    Port = 0
+    Database = ''
+    User = ''
+    Password = ''
+    Protocol = ''
+    Left = 40
+    Top = 8
   end
 end
