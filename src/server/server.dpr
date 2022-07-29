@@ -7,23 +7,28 @@ program server;
 uses
   System.SysUtils,
   Horse,
+
   dbebr.factory.interfaces,
   dbebr.factory.zeos,
-  dbcbr.database.compare,
+
   dbcbr.database.interfaces,
-  dbcbr.ddl.commands,
   ormbr.modeldb.compare,
+
   dbcbr.ddl.generator.firebird,
   dbcbr.metadata.firebird,
+  ormbr.dml.generator.firebird,
+
   dbcbr.ddl.generator.sqlite,
   dbcbr.metadata.sqlite,
+  ormbr.dml.generator.sqlite,
+
   dbcbr.ddl.generator.postgresql,
   dbcbr.metadata.postgresql,
-  ormbr.dml.generator.firebird,
-  ormbr.dml.generator.sqlite,
   ormbr.dml.generator.postgresql,
+
   ormbr.form.monitor,
   ormbr.server.horse,
+
   uDMConnection in 'database\uDMConnection.pas' {DMConnection: TDataModule},
   Entity.Person in '..\entities\Entity.Person.pas';
 
@@ -34,36 +39,24 @@ end;
 
 procedure GetListen(Horse: THorse);
 var
-  oConnectionFirebird, oConnectionSQLite, oConnectionPostgreSQL: IDBConnection;
-  oManagerFirebird, oManagerSQLite, oManagerPostgreSQL: IDatabaseCompare;
-  cDDL: TDDLCommand;
+  oConnection: IDBConnection;
+  oManager: IDatabaseCompare;
+
+  dbDriver: TDriverName;
 
   FRESTServerHorse: TRESTServerHorse;
 begin
+  dbDriver := dnFirebird;
+
   DMConnection := TDMConnection.Create(nil);
+  DMConnection.dbDriver := dbDriver;
 
-  // Firebird
-//  oConnectionFirebird := TFactoryZeos.Create(DMConnection.ZConnectionFirebird, dnFirebird);
-//  oConnectionFirebird.DBOptions.StoreGUIDAsOctet(True);
-//  oManagerFirebird := TModelDbCompare.Create(oConnectionFirebird);
-//  oManagerFirebird.ComparerFieldPosition := True;
-//  oManagerFirebird.CommandsAutoExecute := True;
-//  oManagerFirebird.BuildDatabase;
+  oConnection := TFactoryZeos.Create(DMConnection.ZConnection, dbDriver);
+  oManager := TModelDbCompare.Create(oConnection);
+  oManager.CommandsAutoExecute := True;
+  oManager.BuildDatabase;
 
-  // SQLite
-  oConnectionSQLite := TFactoryZeos.Create(DMConnection.ZConnectionSQLite, dnSQLite);
-  oManagerSQLite := TModelDbCompare.Create(oConnectionSQLite);
-  oManagerSQLite.CommandsAutoExecute := True;
-  oManagerSQLite.BuildDatabase;
-
-  // PostgreSQL
-//  oConnectionPostgreSQL := TFactoryZeos.Create(DMConnection.ZConnectionPostgreSQL, dnPostgreSQL);
-//  oManagerPostgreSQL := TModelDbCompare.Create(oConnectionPostgreSQL);
-//  oManagerPostgreSQL.CommandsAutoExecute := True;
-//  oManagerPostgreSQL.BuildDatabase;
-
-  // ORMBr - REST Server Horse
-  FRESTServerHorse := TRESTServerHorse.Create(nil, oConnectionSQLite);
+  FRESTServerHorse := TRESTServerHorse.Create(oConnection, 'api/v1');
 
   Writeln(Format('Server is runing on %s:%d', [Horse.Host, Horse.Port]));
   Readln;
