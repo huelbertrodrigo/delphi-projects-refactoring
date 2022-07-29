@@ -1,6 +1,6 @@
 {
-	"hash": "d41d8cd98f00b204e9800998ecf8427e",
-	"updated": "2022-07-27T18:04:27.6624359-03:00",
+	"hash": "cf1e8c14e54505f60aa10ceb8d5d8ab3",
+	"updated": "2022-07-29T13:58:16.0446332-03:00",
 	"installedModules": {
 		"github.com/hashload/cqlbr": {
 			"name": "cqlbr",
