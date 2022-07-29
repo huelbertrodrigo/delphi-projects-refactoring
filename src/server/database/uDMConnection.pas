@@ -6,18 +6,18 @@ uses
   System.SysUtils,
   System.Classes,
   ZConnection,
-  ZAbstractConnection;
+  ZAbstractConnection,
+  dbebr.factory.interfaces;
 
 type
   TDMConnection = class(TDataModule)
-    ZConnectionSQLite: TZConnection;
-    ZConnectionPostgreSQL: TZConnection;
-    ZConnectionFirebird: TZConnection;
-    procedure DataModuleCreate(Sender: TObject);
+    ZConnection: TZConnection;
+    procedure ZConnectionBeforeConnect(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
+    dbDriver: TDriverName;
   end;
 
 var
@@ -29,38 +29,43 @@ implementation
 
 {$R *.dfm}
 
-procedure TDMConnection.DataModuleCreate(Sender: TObject);
+procedure TDMConnection.ZConnectionBeforeConnect(Sender: TObject);
 begin
   ForceDirectories('.\database\tmp\');
 
-  // Firebird
-  ZConnectionFirebird.Protocol := 'firebird';
-  ZConnectionFirebird.ClientCodepage := 'UTF8';
-  ZConnectionFirebird.HostName := 'localhost';
-  ZConnectionFirebird.Port := 3050;
-  ZConnectionFirebird.User := 'sysdba';
-  ZConnectionFirebird.Password := 'masterkey';
-  ZConnectionFirebird.Database := 'D:\Development\rascunhos\delphi-projects-refactoring\src\server\database\tmp\database.fdb';
-  ZConnectionFirebird.LibraryLocation := 'D:\Development\firebird 3\WOW64\fbclient.dll';
-  if not FileExists(ZConnectionFirebird.Database) then
-    ZConnectionFirebird.Properties.Add('CreateNewDatabase=true');
+  if dbDriver = dnFirebird then
+  begin
+    ZConnection.Protocol := 'firebird';
+    ZConnection.ClientCodepage := 'UTF8';
+    ZConnection.HostName := 'localhost';
+    ZConnection.Port := 3050;
+    ZConnection.User := 'sysdba';
+    ZConnection.Password := 'masterkey';
+    ZConnection.Database := 'D:\Development\rascunhos\delphi-projects-refactoring\src\server\database\tmp\delphi-factoring.fdb';
+    ZConnection.LibraryLocation := 'D:\Development\firebird 3\WOW64\fbclient.dll';
+    if not FileExists(ZConnection.Database) then
+      ZConnection.Properties.Add('CreateNewDatabase=true');
+  end;
 
-  // SQLite
-  ZConnectionSQLite.Protocol := 'sqlite';
-  ZConnectionSQLite.ClientCodepage := 'UTF-8';
-  ZConnectionSQLite.Database := '.\database\tmp\database.sqlite';
-  if not FileExists(ZConnectionSQLite.Database) then
-    ZConnectionSQLite.Properties.Add('CreateNewDatabase=true');
+  if dbDriver = dnSQLite then
+  begin
+    ZConnection.Protocol := 'sqlite';
+    ZConnection.ClientCodepage := 'UTF-8';
+    ZConnection.Database := '.\database\tmp\delphi-factoring.db3';
+    if not FileExists(ZConnection.Database) then
+      ZConnection.Properties.Add('CreateNewDatabase=true');
+  end;
 
-  // PostgreSQL
-  ZConnectionPostgreSQL.Protocol := 'postgresql';
-  ZConnectionPostgreSQL.ClientCodepage := 'UTF8';
-  ZConnectionPostgreSQL.HostName := 'localhost';
-  ZConnectionPostgreSQL.Port := 5432;
-  ZConnectionPostgreSQL.User := 'postgres';
-  ZConnectionPostgreSQL.Password := 'masterkey';
-  ZConnectionPostgreSQL.Database := 'delphi-factoring';
-//  ZConnectionFirebird.LibraryLocation := 'D:\Development\firebird 3\WOW64\fbclient.dll';
+  if dbDriver = dnPostgreSQL then
+  begin
+    ZConnection.Protocol := 'postgresql';
+    ZConnection.ClientCodepage := 'UTF8';
+    ZConnection.HostName := 'localhost';
+    ZConnection.Port := 5432;
+    ZConnection.User := 'postgres';
+    ZConnection.Password := 'masterkey';
+    ZConnection.Database := 'delphi-factoring';
+  end;
 end;
 
 end.
