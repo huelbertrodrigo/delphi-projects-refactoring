@@ -21,6 +21,7 @@ type
   [Indexe('idx_name','name')]
   [OrderBy('id desc')]
   [Sequence('person')]
+  [NotServerUse()]
   TPerson = class
   private
     { Private declarations }
