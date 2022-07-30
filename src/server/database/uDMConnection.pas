@@ -13,11 +13,14 @@ type
   TDMConnection = class(TDataModule)
     ZConnection: TZConnection;
     procedure ZConnectionBeforeConnect(Sender: TObject);
+    procedure DataModuleCreate(Sender: TObject);
+    procedure ZConnectionAfterConnect(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
     dbDriver: TDriverName;
+    pgSchema: String;
   end;
 
 var
@@ -28,6 +31,12 @@ implementation
 {%CLASSGROUP 'System.Classes.TPersistent'}
 
 {$R *.dfm}
+
+procedure TDMConnection.DataModuleCreate(Sender: TObject);
+begin
+  dbDriver := dnSQLite;
+  pgSchema := 'public';
+end;
 
 procedure TDMConnection.ZConnectionBeforeConnect(Sender: TObject);
 begin
@@ -66,6 +75,12 @@ begin
     ZConnection.Password := 'masterkey';
     ZConnection.Database := 'delphi-factoring';
   end;
+end;
+
+procedure TDMConnection.ZConnectionAfterConnect(Sender: TObject);
+begin
+  if dbDriver = dnPostgreSQL then
+    ZConnection.ExecuteDirect('set search_path to '+pgSchema);
 end;
 
 end.
