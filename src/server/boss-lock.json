@@ -2,6 +2,14 @@
 	"hash": "cf1e8c14e54505f60aa10ceb8d5d8ab3",
 	"updated": "2022-07-29T13:58:16.0446332-03:00",
 	"installedModules": {
+		"github.com/andre-djsystem/hashlib4pascal": {
+			"name": "hashlib4pascal",
+			"version": "1.0.0",
+			"hash": "8528036224699ab509c7d8f31d691ffb",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
 		"github.com/hashload/cqlbr": {
 			"name": "cqlbr",
 			"version": "1.1.21",
@@ -34,6 +42,30 @@
 			"failed": false,
 			"changed": false
 		},
+		"github.com/hashload/horse-compression": {
+			"name": "horse-compression",
+			"version": "1.1.7",
+			"hash": "9e9d52e889e76f68fedea0f9740eb36c",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/hashload/horse-jwt": {
+			"name": "horse-jwt",
+			"version": "2.0.11",
+			"hash": "e32103c3ba49d5483694f93507c263cf",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/hashload/jhonson": {
+			"name": "jhonson",
+			"version": "1.1.4",
+			"hash": "7f48e0509b98505a12fa80ee39b53aea",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
 		"github.com/hashload/jsonbr": {
 			"name": "jsonbr",
 			"version": "1.0.1",
@@ -50,10 +82,10 @@
 			"failed": false,
 			"changed": false
 		},
-		"github.com/hashload/ormbr-restful-components": {
-			"name": "ormbr-restful-components",
-			"version": "1.0.0",
-			"hash": "1e5aef507989fc1cbe259efc10c40a59",
+		"github.com/paolo-rossi/delphi-jose-jwt": {
+			"name": "delphi-jose-jwt",
+			"version": "v3.1.0",
+			"hash": "0e01450c68f70087516e9a6c38204e7d",
 			"artifacts": {},
 			"failed": false,
 			"changed": false
