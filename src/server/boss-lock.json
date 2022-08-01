@@ -2,14 +2,6 @@
 	"hash": "cf1e8c14e54505f60aa10ceb8d5d8ab3",
 	"updated": "2022-07-29T13:58:16.0446332-03:00",
 	"installedModules": {
-		"github.com/andre-djsystem/hashlib4pascal": {
-			"name": "hashlib4pascal",
-			"version": "1.0.0",
-			"hash": "8528036224699ab509c7d8f31d691ffb",
-			"artifacts": {},
-			"failed": false,
-			"changed": false
-		},
 		"github.com/hashload/cqlbr": {
 			"name": "cqlbr",
 			"version": "1.1.21",
@@ -50,14 +42,6 @@
 			"failed": false,
 			"changed": false
 		},
-		"github.com/hashload/horse-jwt": {
-			"name": "horse-jwt",
-			"version": "2.0.11",
-			"hash": "e32103c3ba49d5483694f93507c263cf",
-			"artifacts": {},
-			"failed": false,
-			"changed": false
-		},
 		"github.com/hashload/jhonson": {
 			"name": "jhonson",
 			"version": "1.1.4",
@@ -78,14 +62,6 @@
 			"name": "ormbr",
 			"version": "1.1.21",
 			"hash": "18d23c4eeb905fb0f78cc61d52a9d6c8",
-			"artifacts": {},
-			"failed": false,
-			"changed": false
-		},
-		"github.com/paolo-rossi/delphi-jose-jwt": {
-			"name": "delphi-jose-jwt",
-			"version": "v3.1.0",
-			"hash": "0e01450c68f70087516e9a6c38204e7d",
 			"artifacts": {},
 			"failed": false,
 			"changed": false

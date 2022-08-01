@@ -6,10 +6,9 @@
 	"mainsrc": "./",
 	"projects": [],
 	"dependencies": {
-		"github.com/hashload/horse": "^3.0.2",
-		"github.com/hashload/horse-compression": "^1.1.7",
-		"github.com/hashload/horse-jwt": "^2.0.11",
-		"github.com/hashload/jhonson": "^1.1.4",
-		"github.com/hashload/ormbr": "^1.1.21"
+		"github.com/hashload/horse": "~3.0.2",
+		"github.com/hashload/horse-compression": "~1.1.7",
+		"github.com/hashload/jhonson": "~1.1.4",
+		"github.com/hashload/ormbr": "~1.1.21"
 	}
 }
