@@ -15,25 +15,25 @@ uses
 type
   [Entity]
   [Table('person','')]
-  [PrimaryKey('id', AutoInc, SequenceInc, NoSort, True)]
-  [Indexe('idx_name','name')]
-  [OrderBy('id desc')]
-  [Sequence('person')]
+  [PrimaryKey('id', NotInc, NoneInc, NoSort, True)]
+  [Indexe('idx_id','id')]
+  [OrderBy('name desc')]
   TPerson = class
   private
     { Private declarations }
-    FId: Integer;
+    FId: String;
     FName: String;
   public
     { Public declarations }
     [Restrictions([NoUpdate, NotNull])]
-    [Column('id', ftInteger)]
+    [Column('id', ftString, 36)]
     [Dictionary('Id','validation message','','','',taCenter)]
-    property id: Integer read FId write FId;
+    property id: String read FId write FId;
 
     [Column('name', ftString, 60)]
     [Dictionary('Name','validation message','','','',taLeftJustify)]
     property name: String read FName write FName;
+
   end;
 
 implementation

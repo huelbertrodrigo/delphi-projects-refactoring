@@ -3,7 +3,6 @@ unit Service.Person;
 interface
 
 uses
-  System.SysUtils,
   System.Generics.Collections,
 
   JSONBr,
@@ -12,10 +11,10 @@ uses
   Repository.Person;
 
 function listAll: String;
-function findOne(id: Integer): String;
+function findOne(id: String): String;
 function insert(data: String): String;
-function update(id: Integer; data: String): String;
-function delete(id: Integer): String;
+function update(id, data: String): String;
+function delete(id: String): String;
 
 implementation
 
@@ -34,7 +33,7 @@ begin
   end;
 end;
 
-function findOne(id: Integer): String;
+function findOne(id: String): String;
 var
   person: TPerson;
   repository: TRepositoryPerson;
@@ -58,14 +57,14 @@ begin
     repository := TRepositoryPerson.Create;
     person := TJSONBr.JsonToObject<TPerson>(data);
     repository.insert(person);
-    result := 'Sucesso insert id = '+IntToStr(person.id);
+    result := 'Sucesso insert id = '+person.id;
   finally
     person.Free;
     repository.Free;
   end;
 end;
 
-function update(id: Integer; data: String): String;
+function update(id, data: String): String;
 var
   person: TPerson;
   repository: TRepositoryPerson;
@@ -74,14 +73,14 @@ begin
     repository := TRepositoryPerson.Create;
     person := TJSONBr.JsonToObject<TPerson>(data);
     repository.update(id, person);
-    result := 'Sucesso update id = '+IntToStr(id);
+    result := 'Sucesso update id = '+id;
   finally
     person.Free;
     repository.Free;
   end;
 end;
 
-function delete(id: Integer): String;
+function delete(id: String): String;
 var
   person: TPerson;
   repository: TRepositoryPerson;
@@ -90,7 +89,7 @@ begin
     repository := TRepositoryPerson.Create;
     person := Repository.FindOne(id);
     repository.delete(person);
-    result := 'Sucesso delete id = '+IntToStr(id);
+    result := 'Sucesso delete id = '+id;
   finally
     person.Free;
     repository.Free;

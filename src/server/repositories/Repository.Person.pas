@@ -3,7 +3,7 @@ unit Repository.Person;
 interface
 
 uses
-//  System.Utils,
+  System.SysUtils,
   System.Generics.Collections,
 
   ZConnection,
@@ -23,9 +23,9 @@ type TRepositoryPerson = class
     manager : TManagerObjectSet;
   public
     function listAll: TObjectList<TPerson>;
-    function findOne(id: Integer): TPerson;
+    function findOne(id: String): TPerson;
     procedure insert(person: TPerson);
-    procedure update(id: Integer; person: TPerson);
+    procedure update(id: String; person: TPerson);
     procedure delete(person: TPerson);
 
     constructor create;
@@ -53,18 +53,18 @@ begin
   result := Manager.AddAdapter<TPerson>.Find<TPerson>;
 end;
 
-function TRepositoryPerson.findOne(id: Integer): TPerson;
+function TRepositoryPerson.findOne(id: String): TPerson;
 begin
   result := Manager.AddAdapter<TPerson>.Find<TPerson>(id);
 end;
 
 procedure TRepositoryPerson.insert(person: TPerson);
 begin
-//  person.id := TGUID.NewGuid.ToString();
+  person.id := Copy(TGUID.NewGuid.ToString, 2, 36);
   Manager.AddAdapter<TPerson>.Insert<TPerson>(person);
 end;
 
-procedure TRepositoryPerson.update(id: Integer; person: TPerson);
+procedure TRepositoryPerson.update(id: String; person: TPerson);
 var
   oldPerson: TPerson;
 begin

@@ -30,7 +30,7 @@ var
   result: String;
 begin
   try
-    result := Service.Person.findOne(Req.Params.Field('id').AsInteger);
+    result := Service.Person.findOne(Req.Params.Field('id').AsString);
     Res.Send(result)
       .ContentType('application/json')
       .Status(200);
@@ -58,7 +58,7 @@ var
   result: String;
 begin
   try
-    result := Service.Person.update(Req.Params.Field('id').AsInteger, Req.Body);
+    result := Service.Person.update(Req.Params.Field('id').AsString, Req.Body);
     Res.Send(result)
       .ContentType('application/json')
       .Status(200);
@@ -72,7 +72,7 @@ var
   result: String;
 begin
   try
-    result := Service.Person.delete(Req.Params.Field('id').AsInteger);
+    result := Service.Person.delete(Req.Params.Field('id').AsString);
     Res.Send(result)
       .ContentType('application/json')
       .Status(200);
