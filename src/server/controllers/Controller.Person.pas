@@ -3,109 +3,92 @@
 interface
 
 uses
-  System.Generics.Collections,
-
   Horse,
-  JSONBr,
 
-  Entity.Person,
-  Repository.Person;
+  Service.Person;
 
 procedure Registry;
 
 implementation
 
-procedure ListAll(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure listAll(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
-  LPerson: TObjectList<TPerson>;
-  LRepository: TRepositoryPerson;
+  result: String;
 begin
   try
-    LRepository := TRepositoryPerson.Create;
-    LPerson := LRepository.ListAll;
-    Res.Send(TJSONBr.ObjectListToJsonString<TPerson>(LPerson)).ContentType('application/json').Status(200);
-  finally
-    LPerson.Free;
-    LRepository.Free;
+    result := Service.Person.listAll;
+    Res.Send(result)
+      .ContentType('application/json')
+      .Status(200);
+  except
+
   end;
 end;
 
-procedure FindOne(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure findOne(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
-  LId: Integer;
-  LPerson: TPerson;
-  LRepository: TRepositoryPerson;
+  result: String;
 begin
   try
-    LId := Req.Params.Field('ID').AsInteger;
-    LRepository := TRepositoryPerson.Create;
-    LPerson := LRepository.FindOne(LId);
-    Res.Send(TJSONBr.ObjectToJsonString(LPerson)).ContentType('application/json').Status(200);
-  finally
-    LPerson.Free;
-    LRepository.Free;
+    result := Service.Person.findOne(Req.Params.Field('id').AsInteger);
+    Res.Send(result)
+      .ContentType('application/json')
+      .Status(200);
+  except
+
   end;
 end;
 
-procedure Insert(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure insert(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
-  LPerson: TPerson;
-  LRepository: TRepositoryPerson;
+  result: String;
 begin
   try
-    LRepository := TRepositoryPerson.Create;
-    LPerson := TJSONBr.JsonToObject<TPerson>(Req.Body);
-    LRepository.Insert(LPerson);
-    Res.Send(Req.Body).ContentType('application/json').Status(200);
-  finally
-    LPerson.Free;
-    LRepository.Free;
+    result := Service.Person.insert(Req.Body);
+    Res.Send(result)
+      .ContentType('application/json')
+      .Status(201);
+  except
+
   end;
 end;
 
-procedure Update(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure update(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
-  LPerson: TPerson;
-  LRepository: TRepositoryPerson;
+  result: String;
 begin
   try
-    LRepository := TRepositoryPerson.Create;
-    LPerson := TJSONBr.JsonToObject<TPerson>(Req.Body);
-    LPerson.id := Req.Params.Field('ID').AsInteger;
-    LRepository.Update(LPerson);
-    Res.Send(TJSONBr.ObjectToJsonString(LPerson)).ContentType('application/json').Status(200);
-  finally
-    LPerson.Free;
-    LRepository.Free;
+    result := Service.Person.update(Req.Params.Field('id').AsInteger, Req.Body);
+    Res.Send(result)
+      .ContentType('application/json')
+      .Status(200);
+  except
+
   end;
 end;
 
-procedure Delete(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure delete(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
-  LId: Integer;
-  LPerson: TPerson;
-  LRepository: TRepositoryPerson;
+  result: String;
 begin
   try
-    LId := Req.Params.Field('ID').AsInteger;
-    LRepository := TRepositoryPerson.Create;
-    LPerson := LRepository.FindOne(LId);
-    LRepository.Delete(LPerson);
-    Res.Send(TJSONBr.ObjectToJsonString(LPerson)).ContentType('application/json').Status(200);
-  finally
-    LPerson.Free;
-    LRepository.Free;
+    result := Service.Person.delete(Req.Params.Field('id').AsInteger);
+    Res.Send(result)
+      .ContentType('application/json')
+      .Status(200);
+  except
+
   end;
 end;
 
 procedure Registry;
 begin
   THorse
-    .Get('person', ListAll)
-    .Get('person/:id', FindOne)
-    .Post('person', Insert)
-    .Put('person/:id', Update)
-    .Delete('person/:id', Delete)
+    .Get('person', listAll)
+    .Get('person/:id', findOne)
+    .Post('person', insert)
+    .Put('person/:id', update)
+    .Delete('person/:id', delete)
 end;
 
 

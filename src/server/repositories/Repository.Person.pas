@@ -3,6 +3,7 @@ unit Repository.Person;
 interface
 
 uses
+//  System.Utils,
   System.Generics.Collections,
 
   ZConnection,
@@ -18,62 +19,63 @@ uses
 
 type TRepositoryPerson = class
   private
-    FConnection : IDBConnection;
-    FManager : TManagerObjectSet;
+    connection : IDBConnection;
+    manager : TManagerObjectSet;
   public
-    function ListAll: TObjectList<TPerson>;
-    function FindOne(AId: Integer): TPerson;
-    procedure Insert(APerson: TPerson);
-    procedure Update(APerson: TPerson);
-    procedure Delete(APerson: TPerson);
+    function listAll: TObjectList<TPerson>;
+    function findOne(id: Integer): TPerson;
+    procedure insert(person: TPerson);
+    procedure update(id: Integer; person: TPerson);
+    procedure delete(person: TPerson);
 
-    constructor Create;
-    destructor Destroy; override;
+    constructor create;
+    destructor destroy; override;
   end;
 
 implementation
 
-constructor TRepositoryPerson.Create;
+constructor TRepositoryPerson.create;
 begin
   DMConnection := TDMConnection.Create(nil);
-  FConnection := TFactoryZeos.Create(DMConnection.ZConnection, DMConnection.dbDriver);
-  FManager := TManagerObjectSet.Create(FConnection);
+  Connection := TFactoryZeos.Create(DMConnection.ZConnection, DMConnection.dbDriver);
+  Manager := TManagerObjectSet.Create(Connection);
 end;
 
-destructor TRepositoryPerson.Destroy;
+destructor TRepositoryPerson.destroy;
 begin
-  FConnection.Disconnect;
+  Connection.Disconnect;
   DMConnection.Free;
   inherited;
 end;
 
-function TRepositoryPerson.ListAll: TObjectList<TPerson>;
+function TRepositoryPerson.listAll: TObjectList<TPerson>;
 begin
-  Result := FManager.AddAdapter<TPerson>.Find<TPerson>;
+  result := Manager.AddAdapter<TPerson>.Find<TPerson>;
 end;
 
-function TRepositoryPerson.FindOne(AId: Integer): TPerson;
+function TRepositoryPerson.findOne(id: Integer): TPerson;
 begin
-  Result := FManager.AddAdapter<TPerson>.Find<TPerson>(AId);
+  result := Manager.AddAdapter<TPerson>.Find<TPerson>(id);
 end;
 
-procedure TRepositoryPerson.Insert(APerson: TPerson);
+procedure TRepositoryPerson.insert(person: TPerson);
 begin
-  FManager.AddAdapter<TPerson>.Insert<TPerson>(APerson);
+//  person.id := TGUID.NewGuid.ToString();
+  Manager.AddAdapter<TPerson>.Insert<TPerson>(person);
 end;
 
-procedure TRepositoryPerson.Update(APerson: TPerson);
+procedure TRepositoryPerson.update(id: Integer; person: TPerson);
 var
-  MPerson: TPerson;
+  oldPerson: TPerson;
 begin
-  MPerson := FManager.AddAdapter<TPerson>.Find<TPerson>(APerson.id);
-  FManager.AddAdapter<TPerson>.Modify<TPerson>(MPerson);
-  FManager.AddAdapter<TPerson>.Update<TPerson>(APerson);
+  oldPerson := Manager.AddAdapter<TPerson>.Find<TPerson>(id);
+  Manager.AddAdapter<TPerson>.Modify<TPerson>(oldPerson);
+  Manager.AddAdapter<TPerson>.Update<TPerson>(person);
 end;
 
-procedure TRepositoryPerson.Delete(APerson: TPerson);
+procedure TRepositoryPerson.delete(person: TPerson);
 begin
-  FManager.AddAdapter<TPerson>.Delete<TPerson>(APerson);
+  Manager.AddAdapter<TPerson>.Delete<TPerson>(person);
 end;
 
 end.
