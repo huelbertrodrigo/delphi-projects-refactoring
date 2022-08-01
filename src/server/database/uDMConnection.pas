@@ -34,8 +34,8 @@ implementation
 
 procedure TDMConnection.DataModuleCreate(Sender: TObject);
 begin
-  dbDriver := dnFirebird;
-  pgSchema := 'public';
+  dbDriver := dnPostgreSQL;
+  pgSchema := 'teste';
 end;
 
 procedure TDMConnection.ZConnectionBeforeConnect(Sender: TObject);
@@ -80,7 +80,7 @@ end;
 procedure TDMConnection.ZConnectionAfterConnect(Sender: TObject);
 begin
   if dbDriver = dnPostgreSQL then
-    ZConnection.ExecuteDirect('set search_path to '+pgSchema);
+    ZConnection.ExecuteDirect('set search_path to '+pgSchema+';');
 end;
 
 end.
