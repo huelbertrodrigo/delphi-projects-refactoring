@@ -7,7 +7,7 @@ program server;
 uses
   System.SysUtils,
   Horse,
-//  Horse.Jhonson,
+  Horse.Jhonson,
   Horse.Compression,
   dbebr.factory.interfaces,
   dbebr.factory.zeos,
@@ -23,28 +23,24 @@ uses
   dbcbr.metadata.postgresql,
   ormbr.dml.generator.postgresql,
   uDMConnection in 'database\uDMConnection.pas' {DMConnection: TDataModule},
-  Entity.Person in '..\entities\Entity.Person.pas',
   Controller.Person in 'controllers\Controller.Person.pas',
-  Repository.Person in 'repositories\Repository.Person.pas';
-
-procedure GetHome(Req: THorseRequest; Res: THorseResponse; Next: TNextProc);
-begin
-  Res.Send('Server is runing');
-end;
+  Service.Person in 'services\Service.Person.pas',
+  Repository.Person in 'repositories\Repository.Person.pas',
+  Entity.Person in 'entities\Entity.Person.pas';
 
 procedure GetListen(Horse: THorse);
 var
-  FConnection: IDBConnection;
-  FManager: IDatabaseCompare;
+  Connection: IDBConnection;
+  Manager: IDatabaseCompare;
 begin
   try
     DMConnection := TDMConnection.Create(nil);
 
-    FConnection := TFactoryZeos.Create(DMConnection.ZConnection, DMConnection.dbDriver);
+    Connection := TFactoryZeos.Create(DMConnection.ZConnection, DMConnection.dbDriver);
 
-    FManager := TModelDbCompare.Create(FConnection);
-    FManager.CommandsAutoExecute := True;
-    FManager.BuildDatabase;
+    Manager := TModelDbCompare.Create(Connection);
+    Manager.CommandsAutoExecute := True;
+    Manager.BuildDatabase;
   finally
     DMConnection.Free;
   end;
@@ -60,10 +56,14 @@ begin
   {$ENDIF}
 
   THorse
-//    .Use(Jhonson)
+    .Use(Jhonson)
     .Use(Compression());
 
-  THorse.Get('/', GetHome);
+  THorse.Get('/',
+    procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+    begin
+      Res.Send('Server is runing');
+    end);
 
   Controller.Person.Registry;
 
