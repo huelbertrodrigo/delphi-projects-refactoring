@@ -34,7 +34,7 @@ implementation
 
 procedure TDMConnection.DataModuleCreate(Sender: TObject);
 begin
-  dbDriver := dnSQLite;
+  dbDriver := dnFirebird;
   pgSchema := 'public';
 end;
 
